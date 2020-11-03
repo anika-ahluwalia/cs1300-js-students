@@ -23,38 +23,30 @@ const corsPromise = () =>
 
 
 // THIS IS SOME SAMPLE CODE FOR HOW TO USE PROMISES -- feel free to adapt this into a function!
-
-const getRequest = () => { 
-  corsPromise().then(
-    (request) => 
-      (request.onload = request.onerror = function () {
-        // TODO: ADD FUNCTION, ETC. FOR WHATEVER YOU WANT TO DO ONCE THE DATA IS RECEIVED
-
-        const jsonified = JSON.parse(request.reponse).data;
-
-        console.log(jsonified);
-        console.log(request.reponse);
-        handleResponse(request.reponse);
-      })
+const getRequest= () => {
+  corsPromise().then(request => request.onload = request.onerror = function () {
+    const data = JSON.parse(request.response).data;
+    handleResponse(data);
+  }
   );
 }
 
 //// TODO: ADD WHATEVER FUN CONTENT YOU WANT ////
-const handleResponse = (requestResponse) => {
+const handleResponse = (data) => {
 
-  console.log(requestResponse);
-
-  const jsonified = JSON.parse(requestResponse);
-  const plantsArray = jsonified.data;
-
-  const plantsAfter1753 = plantsArray.filter((arrayItem) => {
-    return arrayItem.year > 1753;
+  const plants1753 = data.filter((plant) => {
+    return plant.year == 1753;
   })
 
-  plantsAfter1753.map(console.log)
+  plants1753.map(displayDiv);
 }
 
 const displayDiv = (content) => {
   const wrapperDiv = document.createElement("div");
-
+  wrapperDiv.setAttribute("id", "wrapper");
+  const image = document.createElement("img");
+  image.src = content.image_url;
+  image.alt = "plant picture";
+  wrapperDiv.appendChild(image);
+  document.getElementById("plant pics").appendChild(wrapperDiv);
 }
