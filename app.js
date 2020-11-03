@@ -1,4 +1,3 @@
-const { cornsilk } = require("color-name");
 
 var corsApiUrl = "https://cors-anywhere.herokuapp.com/";
 // TODO: REPLACE YOUR TOKEN
@@ -24,22 +23,27 @@ const corsPromise = () =>
 
 
 // THIS IS SOME SAMPLE CODE FOR HOW TO USE PROMISES -- feel free to adapt this into a function!
-require = (option) => {
 
+const getRequest = () => { 
+  corsPromise().then(
+    (request) => 
+      (request.onload = request.onerror = function () {
+        // TODO: ADD FUNCTION, ETC. FOR WHATEVER YOU WANT TO DO ONCE THE DATA IS RECEIVED
+
+        const jsonified = JSON.parse(request.reponse).data;
+
+        console.log(jsonified);
+        console.log(request.reponse);
+        handleResponse(request.reponse);
+      })
+  );
 }
-
-const promiseObj = corsPromise();
-
-corsPromise().then(
-  (request) =>
-    (request.onload = request.onerror = function () {
-      // TODO: ADD FUNCTION, ETC. FOR WHATEVER YOU WANT TO DO ONCE THE DATA IS RECEIVED
-      handleResponse(request.reponse);
-    })
-);
 
 //// TODO: ADD WHATEVER FUN CONTENT YOU WANT ////
 const handleResponse = (requestResponse) => {
+
+  console.log(requestResponse);
+
   const jsonified = JSON.parse(requestResponse);
   const plantsArray = jsonified.data;
 
